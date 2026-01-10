@@ -181,4 +181,4 @@ This project is licensed under the MIT License.
 For issues and questions:
 - Create an issue on GitHub
 - Use the contact form on the website
-- Email: your-email@example.com
+- Email: atik.hridoy.00@gmail.com
