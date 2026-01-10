@@ -1,0 +1,461 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="card">
+        <h1>Add New Project</h1>
+        <p>Fill in the details below to add a new project to your portfolio</p>
+    </div>
+
+    <div class="card">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="title">Project Title *</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year" value="2024" min="2020" max="2030">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="web">Web Development</option>
+                    <option value="mobile">Mobile App</option>
+                    <option value="desktop">Desktop App</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="technologies">🛠️ Technologies & Languages</label>
+                <div class="tech-selection">
+                    <div class="tech-category">
+                        <h4>Frontend</h4>
+                        <div class="tech-options">
+                            <label><input type="checkbox" name="technologies" value="HTML"> HTML</label>
+                            <label><input type="checkbox" name="technologies" value="CSS"> CSS</label>
+                            <label><input type="checkbox" name="technologies" value="JavaScript"> JavaScript</label>
+                            <label><input type="checkbox" name="technologies" value="React"> React</label>
+                            <label><input type="checkbox" name="technologies" value="Vue.js"> Vue.js</label>
+                            <label><input type="checkbox" name="technologies" value="Angular"> Angular</label>
+                            <label><input type="checkbox" name="technologies" value="TypeScript"> TypeScript</label>
+                            <label><input type="checkbox" name="technologies" value="Tailwind CSS"> Tailwind CSS</label>
+                            <label><input type="checkbox" name="technologies" value="Bootstrap"> Bootstrap</label>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-category">
+                        <h4>Backend</h4>
+                        <div class="tech-options">
+                            <label><input type="checkbox" name="technologies" value="Python"> Python</label>
+                            <label><input type="checkbox" name="technologies" value="Django"> Django</label>
+                            <label><input type="checkbox" name="technologies" value="Node.js"> Node.js</label>
+                            <label><input type="checkbox" name="technologies" value="Express.js"> Express.js</label>
+                            <label><input type="checkbox" name="technologies" value="PHP"> PHP</label>
+                            <label><input type="checkbox" name="technologies" value="Laravel"> Laravel</label>
+                            <label><input type="checkbox" name="technologies" value="Java"> Java</label>
+                            <label><input type="checkbox" name="technologies" value="Spring Boot"> Spring Boot</label>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-category">
+                        <h4>Mobile</h4>
+                        <div class="tech-options">
+                            <label><input type="checkbox" name="technologies" value="Flutter"> Flutter</label>
+                            <label><input type="checkbox" name="technologies" value="Dart"> Dart</label>
+                            <label><input type="checkbox" name="technologies" value="React Native"> React Native</label>
+                            <label><input type="checkbox" name="technologies" value="Swift"> Swift</label>
+                            <label><input type="checkbox" name="technologies" value="Kotlin"> Kotlin</label>
+                            <label><input type="checkbox" name="technologies" value="Android"> Android</label>
+                            <label><input type="checkbox" name="technologies" value="iOS"> iOS</label>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-category">
+                        <h4>Database & Tools</h4>
+                        <div class="tech-options">
+                            <label><input type="checkbox" name="technologies" value="MongoDB"> MongoDB</label>
+                            <label><input type="checkbox" name="technologies" value="PostgreSQL"> PostgreSQL</label>
+                            <label><input type="checkbox" name="technologies" value="MySQL"> MySQL</label>
+                            <label><input type="checkbox" name="technologies" value="Firebase"> Firebase</label>
+                            <label><input type="checkbox" name="technologies" value="Redis"> Redis</label>
+                            <label><input type="checkbox" name="technologies" value="Docker"> Docker</label>
+                            <label><input type="checkbox" name="technologies" value="Git"> Git</label>
+                            <label><input type="checkbox" name="technologies" value="AWS"> AWS</label>
+                            <label><input type="checkbox" name="technologies" value="Google Cloud"> Google Cloud</label>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-category">
+                        <h4>Other</h4>
+                        <div class="tech-options">
+                            <label><input type="checkbox" name="technologies" value="C++"> C++</label>
+                            <label><input type="checkbox" name="technologies" value="C#"> C#</label>
+                            <label><input type="checkbox" name="technologies" value="Go"> Go</label>
+                            <label><input type="checkbox" name="technologies" value="Rust"> Rust</label>
+                            <label><input type="checkbox" name="technologies" value="GraphQL"> GraphQL</label>
+                            <label><input type="checkbox" name="technologies" value="REST API"> REST API</label>
+                            <label><input type="checkbox" name="technologies" value="Machine Learning"> Machine Learning</label>
+                            <label><input type="checkbox" name="technologies" value="AI"> AI</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom Technology Input -->
+                <div class="custom-tech">
+                    <label for="custom_tech">➕ Add Custom Technology:</label>
+                    <input type="text" id="custom_tech" placeholder="Enter custom technology name">
+                    <button type="button" onclick="addCustomTech()" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">Add</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="live_url">Live URL</label>
+                <input type="url" id="live_url" name="live_url" 
+                       placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="github_url">GitHub URL</label>
+                <input type="url" id="github_url" name="github_url" 
+                       placeholder="https://github.com/user/project">
+            </div>
+
+            <div class="form-group">
+                <label for="image_url">Image URL</label>
+                <input type="url" id="image_url" name="image_url" 
+                       placeholder="https://example.com/image.jpg">
+            </div>
+
+            <div class="form-group">
+                <label for="created_at">Created Date</label>
+                <input type="date" id="created_at" name="created_at">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="featured"> Featured Project
+                </label>
+            </div>
+
+            <!-- Multiple Image Upload Section -->
+            <div class="form-group">
+                <label for="images">🖼️ Upload Multiple Images</label>
+                <input type="file" id="images" name="images" multiple accept="image/*" 
+                       onchange="previewImages(event)">
+                <div id="imagePreview" class="image-preview-container">
+                    <!-- Image previews will be shown here -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn-primary">🚀 Add Project</button>
+                <a href="/portfolio-admin/portfolio-projects/" class="btn-danger" style="margin-left: 10px;">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.tech-selection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tech-category {
+    background: rgba(65, 84, 224, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(65, 84, 224, 0.2);
+    transition: all 0.3s ease;
+}
+
+.tech-category:hover {
+    background: rgba(65, 84, 224, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(65, 84, 224, 0.2);
+}
+
+.tech-category h4 {
+    color: #417690;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    border-bottom: 2px solid #417690;
+    padding-bottom: 0.3rem;
+}
+
+.tech-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+.tech-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(65, 84, 224, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.tech-options label:hover {
+    background: rgba(65, 84, 224, 0.1);
+    border-color: #417690;
+    transform: translateX(4px);
+}
+
+.tech-options input[type="checkbox"] {
+    accent-color: #417690;
+    transform: scale(1.1);
+}
+
+.tech-options input[type="checkbox"]:checked + span {
+    color: #417690;
+    font-weight: 600;
+}
+
+.custom-tech {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(40, 167, 69, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.custom-tech input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.custom-tech input:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+}
+
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(65, 84, 224, 0.1);
+    border-radius: 8px;
+    border: 2px dashed #417690;
+}
+
+.image-preview {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #417690;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.image-preview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(65, 84, 224, 0.3);
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-preview .remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(220, 53, 69, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.image-preview .remove-btn:hover {
+    background: rgba(220, 53, 69, 1);
+    transform: scale(1.1);
+}
+
+.upload-hint {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tech-selection {
+        grid-template-columns: 1fr;
+    }
+    
+    .tech-options {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    
+    .custom-tech {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+</style>
+
+<script>
+let uploadedImages = [];
+
+function previewImages(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('imagePreview');
+    
+    // Clear existing previews
+    previewContainer.innerHTML = '';
+    uploadedImages = [];
+    
+    // Create preview for each image
+    Array.from(files).forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'image-preview';
+                previewDiv.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview ${index + 1}">
+                    <button class="remove-btn" onclick="removeImage(${index})" type="button">✕</button>
+                `;
+                
+                previewContainer.appendChild(previewDiv);
+                uploadedImages.push(file);
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Show upload hint
+    if (files.length > 0) {
+        const hint = document.createElement('div');
+        hint.className = 'upload-hint';
+        hint.textContent = `${files.length} image(s) selected. Images will be stored as URLs for now.`;
+        previewContainer.appendChild(hint);
+    }
+}
+
+function removeImage(index) {
+    const previewContainer = document.getElementById('imagePreview');
+    const previews = previewContainer.querySelectorAll('.image-preview');
+    
+    if (previews[index]) {
+        previews[index].remove();
+        uploadedImages.splice(index, 1);
+    }
+    
+    // Update file input
+    const fileInput = document.getElementById('images');
+    const dt = new DataTransfer();
+    
+    uploadedImages.forEach((file, i) => {
+        if (i !== index) {
+            dt.items.add(file);
+        }
+    });
+    
+    fileInput.files = dt.files;
+    
+    // Show updated hint
+    const hint = previewContainer.querySelector('.upload-hint');
+    if (hint) {
+        hint.textContent = uploadedImages.length > 0 ? 
+            `${uploadedImages.length} image(s) selected` : 
+            'No images selected';
+    }
+}
+
+function addCustomTech() {
+    const customTechInput = document.getElementById('custom_tech');
+    const techValue = customTechInput.value.trim();
+    
+    if (techValue) {
+        // Find the "Other" category
+        const otherCategory = document.querySelector('.tech-category:last-child .tech-options');
+        
+        // Create new checkbox
+        const newLabel = document.createElement('label');
+        newLabel.innerHTML = `
+            <input type="checkbox" name="technologies" value="${techValue}" checked>
+            ${techValue}
+        `;
+        
+        // Add to the "Other" category
+        otherCategory.appendChild(newLabel);
+        
+        // Clear the input
+        customTechInput.value = '';
+        
+        // Show success feedback
+        customTechInput.style.borderColor = '#28a745';
+        customTechInput.placeholder = `Added: ${techValue}`;
+        
+        setTimeout(() => {
+            customTechInput.style.borderColor = 'rgba(40, 167, 69, 0.3)';
+            customTechInput.placeholder = 'Enter custom technology name';
+        }, 2000);
+    }
+}
+
+// Collect selected technologies on form submission
+document.querySelector('form').addEventListener('submit', function(e) {
+    const checkboxes = document.querySelectorAll('input[name="technologies"]:checked');
+    const selectedTechs = Array.from(checkboxes).map(cb => cb.value);
+    
+    console.log('Selected technologies:', selectedTechs);
+    console.log('Form submitted with images:', uploadedImages.length);
+    console.log('Image files:', uploadedImages);
+    
+    // You can add these to a hidden field or process them as needed
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'technologies_list';
+    hiddenInput.value = JSON.stringify(selectedTechs);
+    this.appendChild(hiddenInput);
+});
+</script>
+{% endblock %}

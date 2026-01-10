@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="card">
+        <h1>{{ site_title }}</h1>
+        <p>Welcome to your portfolio admin dashboard</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        <div class="card">
+            <h2>📁 Projects</h2>
+            <p style="font-size: 2em; font-weight: bold; color: #417690;">{{ projects_count }}</p>
+            <p>Total projects in your portfolio</p>
+            <a href="/portfolio-admin/portfolio-projects/" class="btn-primary" style="margin-top: 15px;">Manage Projects</a>
+        </div>
+
+        <div class="card">
+            <h2>📧 Contact Messages</h2>
+            <p style="font-size: 2em; font-weight: bold; color: #417690;">{{ contacts_count }}</p>
+            <p>Contact form submissions</p>
+            <a href="/portfolio-admin/portfolio-contacts/" class="btn-primary" style="margin-top: 15px;">View Messages</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Quick Actions</h2>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="/portfolio-admin/portfolio-projects/add/" class="btn-primary">➕ Add New Project</a>
+            <a href="/" class="btn-primary">👁️ View Website</a>
+            <a href="/api/projects/" class="btn-primary">🔍 View API</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
