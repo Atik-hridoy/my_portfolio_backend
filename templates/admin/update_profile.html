@@ -1,0 +1,358 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="card">
+        <h1>✏️ Update Profile</h1>
+        <p>Edit your professional profile information</p>
+        <a href="/portfolio-admin/profile/" class="btn-danger" style="margin-left: 10px;">❌ Cancel</a>
+    </div>
+
+    <div class="card">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" value="{{ profile.name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="title">Professional Title *</label>
+                    <input type="text" id="title" name="title" value="{{ profile.title }}" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="bio">Professional Bio *</label>
+                <textarea id="bio" name="bio" rows="4" required>{{ profile.bio }}</textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" value="{{ profile.email }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" value="{{ profile.phone }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <input type="text" id="location" name="location" value="{{ profile.location }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience_years">Experience Years</label>
+                    <input type="text" id="experience_years" name="experience_years" value="{{ profile.experience_years }}" placeholder="3+">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" name="website" value="{{ profile.website }}" placeholder="https://example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="github">GitHub Profile</label>
+                    <input type="url" id="github" name="github" value="{{ profile.github }}" placeholder="https://github.com/username">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" name="linkedin" value="{{ profile.linkedin }}" placeholder="https://linkedin.com/in/username">
+            </div>
+            
+            <div class="form-group">
+                <label for="profile_image">🖼️ Profile Image URL</label>
+                <input type="url" id="profile_image" name="profile_image" value="{{ profile.profile_image }}" placeholder="https://example.com/image.jpg">
+                <div class="image-preview">
+                    <img id="profilePreview" src="{{ profile.profile_image }}" alt="Profile Preview">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="cv_file">📄 Upload CV/Resume</label>
+                <input type="file" id="cv_file" name="cv_file" accept=".pdf,.doc,.docx" onchange="previewCV(event)">
+                <div class="cv-preview">
+                    {% if profile.cv_file %}
+                        <div class="cv-info">
+                            <span class="cv-icon">📄</span>
+                            <div class="cv-details">
+                                <p><strong>Current CV:</strong> {{ profile.cv_file }}</p>
+                                <a href="{{ profile.cv_file }}" target="_blank" class="btn-primary" style="font-size: 0.8rem; padding: 5px 10px;">👁 View CV</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div id="cvPreview" class="cv-upload-preview">
+                        <!-- CV preview will be shown here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="skills">🛠️ Skills & Technologies</label>
+                <div class="skills-selection">
+                    <div class="skill-category">
+                        <h4>Frontend</h4>
+                        <div class="skill-options">
+                            <label><input type="checkbox" name="skills" value="HTML" {% if 'HTML' in profile.skills %}checked{% endif %}> HTML</label>
+                            <label><input type="checkbox" name="skills" value="CSS" {% if 'CSS' in profile.skills %}checked{% endif %}> CSS</label>
+                            <label><input type="checkbox" name="skills" value="JavaScript" {% if 'JavaScript' in profile.skills %}checked{% endif %}> JavaScript</label>
+                            <label><input type="checkbox" name="skills" value="React" {% if 'React' in profile.skills %}checked{% endif %}> React</label>
+                            <label><input type="checkbox" name="skills" value="Vue.js" {% if 'Vue.js' in profile.skills %}checked{% endif %}> Vue.js</label>
+                            <label><input type="checkbox" name="skills" value="Angular" {% if 'Angular' in profile.skills %}checked{% endif %}> Angular</label>
+                            <label><input type="checkbox" name="skills" value="TypeScript" {% if 'TypeScript' in profile.skills %}checked{% endif %}> TypeScript</label>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Backend</h4>
+                        <div class="skill-options">
+                            <label><input type="checkbox" name="skills" value="Python" {% if 'Python' in profile.skills %}checked{% endif %}> Python</label>
+                            <label><input type="checkbox" name="skills" value="Django" {% if 'Django' in profile.skills %}checked{% endif %}> Django</label>
+                            <label><input type="checkbox" name="skills" value="Node.js" {% if 'Node.js' in profile.skills %}checked{% endif %}> Node.js</label>
+                            <label><input type="checkbox" name="skills" value="Express.js" {% if 'Express.js' in profile.skills %}checked{% endif %}> Express.js</label>
+                            <label><input type="checkbox" name="skills" value="PHP" {% if 'PHP' in profile.skills %}checked{% endif %}> PHP</label>
+                            <label><input type="checkbox" name="skills" value="MongoDB" {% if 'MongoDB' in profile.skills %}checked{% endif %}> MongoDB</label>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h4>Tools & Others</h4>
+                        <div class="skill-options">
+                            <label><input type="checkbox" name="skills" value="Git" {% if 'Git' in profile.skills %}checked{% endif %}> Git</label>
+                            <label><input type="checkbox" name="skills" value="Docker" {% if 'Docker' in profile.skills %}checked{% endif %}> Docker</label>
+                            <label><input type="checkbox" name="skills" value="AWS" {% if 'AWS' in profile.skills %}checked{% endif %}> AWS</label>
+                            <label><input type="checkbox" name="skills" value="REST API" {% if 'REST API' in profile.skills %}checked{% endif %}> REST API</label>
+                            <label><input type="checkbox" name="skills" value="Machine Learning" {% if 'Machine Learning' in profile.skills %}checked{% endif %}> Machine Learning</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="available_for_hire" {% if profile.available_for_hire %}checked{% endif %}>
+                    🎯 Available for Hire
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn-primary">🚀 Update Profile</button>
+                <a href="/portfolio-admin/profile/" class="btn-danger" style="margin-left: 10px;">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.image-preview {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.image-preview img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #417690;
+    box-shadow: 0 4px 15px rgba(65, 84, 224, 0.3);
+    transition: all 0.3s ease;
+}
+
+.image-preview img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(65, 84, 224, 0.4);
+}
+
+.cv-preview {
+    margin-top: 1rem;
+}
+
+.cv-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(40, 167, 69, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    margin-bottom: 1rem;
+}
+
+.cv-icon {
+    font-size: 2rem;
+    color: #dc3545;
+}
+
+.cv-details {
+    flex: 1;
+}
+
+.cv-details p {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.cv-upload-preview {
+    padding: 1rem;
+    background: rgba(65, 84, 224, 0.1);
+    border-radius: 8px;
+    border: 2px dashed #417690;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.skills-selection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.skill-category {
+    background: rgba(65, 84, 224, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(65, 84, 224, 0.2);
+    transition: all 0.3s ease;
+}
+
+.skill-category:hover {
+    background: rgba(65, 84, 224, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(65, 84, 224, 0.2);
+}
+
+.skill-category h4 {
+    color: #417690;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #417690;
+    padding-bottom: 0.3rem;
+}
+
+.skill-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+.skill-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(65, 84, 224, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.skill-options label:hover {
+    background: rgba(65, 84, 224, 0.1);
+    border-color: #417690;
+    transform: translateX(4px);
+}
+
+.skill-options input[type="checkbox"] {
+    accent-color: #417690;
+    transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .skills-selection {
+        grid-template-columns: 1fr;
+    }
+    
+    .skill-options {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    
+    .cv-info {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+
+<script>
+// Profile image preview
+document.getElementById('profile_image').addEventListener('input', function(e) {
+    const preview = document.getElementById('profilePreview');
+    preview.src = e.target.value;
+});
+
+// CV preview
+function previewCV(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('cvPreview');
+    
+    if (file) {
+        const fileName = file.name;
+        const fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+        
+        preview.innerHTML = `
+            <div class="cv-info">
+                <span class="cv-icon">📄</span>
+                <div class="cv-details">
+                    <p><strong>Selected File:</strong> ${fileName}</p>
+                    <p><strong>File Size:</strong> ${fileSize}</p>
+                    <p><strong>File Type:</strong> ${file.type || 'Unknown'}</p>
+                </div>
+            </div>
+        `;
+        
+        console.log('CV file selected:', fileName, fileSize);
+    } else {
+        preview.innerHTML = '<p style="color: #666; font-style: italic;">No file selected</p>';
+    }
+}
+
+// Form submission logging
+document.querySelector('form').addEventListener('submit', function(e) {
+    const checkboxes = document.querySelectorAll('input[name="skills"]:checked');
+    const selectedSkills = Array.from(checkboxes).map(cb => cb.value);
+    const cvFile = document.getElementById('cv_file').files[0];
+    
+    console.log('Profile update submitted');
+    console.log('Selected skills:', selectedSkills);
+    console.log('Available for hire:', document.querySelector('input[name="available_for_hire"]').checked);
+    console.log('CV file:', cvFile ? cvFile.name : 'No CV uploaded');
+    
+    // Add CV file info to form data
+    if (cvFile) {
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'cv_filename';
+        hiddenInput.value = cvFile.name;
+        this.appendChild(hiddenInput);
+    }
+});
+</script>
+{% endblock %}

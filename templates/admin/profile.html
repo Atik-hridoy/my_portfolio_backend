@@ -1,0 +1,267 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="card">
+        <h1>👤 Profile Management</h1>
+        <p>Manage your professional profile information</p>
+        <a href="/portfolio-admin/profile/update/" class="btn-primary">✏️ Edit Profile</a>
+    </div>
+
+    <div class="card">
+        <div class="profile-header">
+            <div class="profile-image">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image }}" alt="{{ profile.name }}" 
+                         onerror="this.src='https://via.placeholder.com/150x150/417690/ffffff?text=AH'">
+                {% else %}
+                    <img src="https://via.placeholder.com/150x150/417690/ffffff?text=AH" 
+                         alt="{{ profile.name }}">
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h2>{{ profile.name }}</h2>
+                <h3>{{ profile.title }}</h3>
+                <p class="bio">{{ profile.bio }}</p>
+            </div>
+        </div>
+        
+        <div class="profile-details">
+            <div class="detail-section">
+                <h4>📧 Contact Information</h4>
+                <div class="detail-content">
+                    <p><strong>Email:</strong> {{ profile.email }}</p>
+                    <p><strong>Phone:</strong> {{ profile.phone }}</p>
+                    <p><strong>Location:</strong> {{ profile.location }}</p>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h4>🌐 Online Presence</h4>
+                <div class="detail-content">
+                    <p><strong>Website:</strong> <a href="{{ profile.website }}" target="_blank">{{ profile.website }}</a></p>
+                    <p><strong>GitHub:</strong> <a href="{{ profile.github }}" target="_blank">{{ profile.github }}</a></p>
+                    <p><strong>LinkedIn:</strong> <a href="{{ profile.linkedin }}" target="_blank">{{ profile.linkedin }}</a></p>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h4>🛠️ Professional Details</h4>
+                <div class="detail-content">
+                    <p><strong>Experience:</strong> {{ profile.experience_years }} years</p>
+                    <p><strong>Available for Hire:</strong> 
+                        {% if profile.available_for_hire %}
+                            <span class="available-yes">✅ Yes</span>
+                        {% else %}
+                            <span class="available-no">❌ No</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h4>🎯 Skills</h4>
+                <div class="detail-content">
+                    <div class="skills-container">
+                        {% for skill in profile.skills %}
+                            <span class="skill-tag">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h4>📄 CV/Resume</h4>
+                <div class="detail-content">
+                    {% if profile.cv_file %}
+                        <div class="cv-info">
+                            <span class="cv-icon">📄</span>
+                            <div class="cv-details">
+                                <p><strong>Current CV:</strong> {{ profile.cv_filename }}</p>
+                                {% if profile.cv_file_size %}
+                                    <p><strong>File Size:</strong> {{ profile.cv_file_size }}</p>
+                                {% endif %}
+                                <a href="{{ profile.cv_file }}" target="_blank" class="btn-primary" style="font-size: 0.8rem; padding: 5px 10px;">👁 View CV</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p style="color: #666; font-style: italic;">No CV uploaded yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(65, 84, 224, 0.1), rgba(100, 181, 246, 0.1));
+    border-radius: 12px;
+    border-left: 4px solid #417690;
+}
+
+.profile-image {
+    flex-shrink: 0;
+}
+
+.profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #417690;
+    box-shadow: 0 8px 25px rgba(65, 84, 224, 0.3);
+    transition: all 0.3s ease;
+}
+
+.profile-image img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(65, 84, 224, 0.4);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h2 {
+    color: #417690;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(65, 84, 224, 0.1);
+}
+
+.profile-info h3 {
+    color: #666;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.bio {
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.profile-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.detail-section {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(65, 84, 224, 0.2);
+    transition: all 0.3s ease;
+}
+
+.detail-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(65, 84, 224, 0.2);
+    border-color: #417690;
+}
+
+.detail-section h4 {
+    color: #417690;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-content {
+    color: #333;
+}
+
+.detail-content p {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-content strong {
+    color: #417690;
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.detail-content a {
+    color: #417690;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.detail-content a:hover {
+    color: #64b5f6;
+    transform: translateX(4px);
+}
+
+.available-yes {
+    color: #28a745;
+    font-weight: 600;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.available-no {
+    color: #dc3545;
+    font-weight: 600;
+    background: rgba(220, 53, 69, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-tag {
+    background: linear-gradient(45deg, #417690, #64b5f6);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(65, 84, 224, 0.2);
+    transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(65, 84, 224, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-info h2 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
