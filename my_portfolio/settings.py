@@ -101,58 +101,46 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Logging Configuration
+# Logging configuration for production (Railway compatible)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'colorful': {
-            'format': '\033[94m{levelname}\033[0m \033[92m{asctime}\033[0m \033[93m{module}\033[95m\033[92m{process:d}\033[95m\033[92m{thread:d}\033[95m\033[92m{message}\033[0m',
-            'style': '{',
-        },
         'verbose': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
         'simple': {
-            'format': '{levelname} {asctime} {message}',
+            'format': '{levelname} {message}',
             'style': '{',
         },
     },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'logs/portfolio.log',
-            'formatter': 'colorful',
-            'encoding': 'utf-8',
-        },
         'console': {
-            'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'colorful',
+            'formatter': 'simple',
         },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'portfolio.log',  # Relative path, no directory
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],  # Only console for Railway
+        'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
         'portfolio': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
-        'portfolio.admin': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-    'root': {
-        'handlers': ['console', 'file'],
-        'level': 'INFO',
     },
 }
 
